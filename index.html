@@ -29,6 +29,12 @@
             background: rgba(0, 0, 0, 0.5);
         }
 
+        #apple-emoji {
+            font-size: 2em;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
         #timer {
             font-size: 3em;
             margin: auto;
@@ -36,9 +42,15 @@
         }
 
         #controls {
-            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #duration-container {
             display: flex;
             align-items: center;
+            margin-bottom: 10px;
         }
 
         #duration {
@@ -54,17 +66,7 @@
             border-radius: 5px;
             cursor: pointer;
             margin-right: 5px;
-        }
-
-        #apple-container {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        #apple-emoji {
-            font-size: 2em;
-            cursor: pointer;
+            margin-bottom: 5px;
         }
 
         #instruction-popup {
@@ -163,17 +165,18 @@
 
 <body>
     <div id="timer-wrapper">
+        <div id="apple-emoji" onclick="showInstructions()">🍎</div>
         <div id="timer">00:00</div>
-        <div id="status"></div>
         <div id="controls">
-            <label for="duration">duração(minutos):</label>
-            <input type="number" id="duration" min="1" max="60" value="25">
-            <button onclick="startTimer()">Iniciar</button>
-            <button onclick="pauseTimer()">Pausar</button>
-            <button onclick="resetTimer()">Reiniciar</button>
-        </div>
-        <div id="apple-container">
-            <div id="apple-emoji" onclick="showInstructions()">🍎</div>
+            <div id="duration-container">
+                <label for="duration">duração(minutos):</label>
+                <input type="number" id="duration" min="1" max="60" value="25">
+            </div>
+            <div>
+                <button onclick="startTimer()">Iniciar</button>
+                <button onclick="pauseTimer()">Pausar</button>
+                <button onclick="resetTimer()">Reiniciar</button>
+            </div>
         </div>
         <div id="instruction-popup">
             <p>Passo 1: Escolha a Tarefa</p>
@@ -223,15 +226,15 @@
             clearInterval(intervalId);
         }
 
+        function resetTimer() {
+            stopTimer();
+            startTimer();
+        }
+
         function stopTimer() {
             clearInterval(intervalId);
             timer = 0;
             updateTimerDisplay();
-        }
-
-        function resetTimer() {
-            stopTimer();
-            startTimer();
         }
 
         function updateTimerDisplay() {
