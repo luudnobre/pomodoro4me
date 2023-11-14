@@ -6,26 +6,30 @@
   <h1> POMODORO FLOW </h1>
   <style>
     body {
-      background: linear-gradient(to bottom, #450a63, #000000); /* Degradê verde escuro sobre fundo preto */
+      background: linear-gradient(to bottom, #450a63, #000000);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       height: 100vh;
       margin: 0;
-      color: #ffffff; /* Cor do texto branco */
-      font-family: 'Fira Code', monospace; /* Fonte Fira Code */
+      color: #ffffff;
+      font-family: 'Fira Code', monospace;
     }
 
     #timer-wrapper {
-      position: relative; /* Adiciona posição relativa para posicionar o emoji e o texto */
-      border: 2px solid rgb(87, 86, 142); /* Borda branca */
-      padding: 20px; /* Espaçamento interno */
-      border-radius: 10px; /* Cantos arredondados */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      border: 2px solid rgb(87, 86, 142);
+      padding: 20px;
+      border-radius: 10px;
     }
 
     #timer {
       font-size: 3em;
+      margin: auto;
     }
 
     #status {
@@ -40,19 +44,19 @@
     #github-link {
       font-size: 1.5em;
       margin-top: 20px;
-      cursor: pointer; /* Adiciona um cursor de mão para indicar que é clicável */
-      animation: fadeIn 2s; /* Adiciona uma animação de fade-in */
-      text-decoration: none; /* Remove a decoração de link padrão */
-      color: #ffffff; /* Cor do texto branco */
-      font-weight: bold; /* Deixa o texto em negrito */
+      cursor: pointer;
+      animation: fadeIn 2s;
+      text-decoration: none;
+      color: #ffffff;
+      font-weight: bold;
     }
 
     #instruction-popup {
       position: absolute;
-      top: 50%; /* Centraliza verticalmente */
-      left: 50%; /* Centraliza horizontalmente */
+      top: 50%;
+      left: 50%;
       transform: translate(-50%, -50%);
-      background: rgba(0, 0, 0, 0.8); /* Fundo preto translúcido */
+      background: rgba(0, 0, 0, 0.8);
       color: #fff;
       padding: 20px;
       border-radius: 10px;
@@ -70,15 +74,6 @@
       transform: translateX(-50%);
     }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
-
     #developer-info {
       font-size: 1.5em;
       margin-top: 20px;
@@ -87,108 +82,137 @@
     }
 
     #developer-info a {
-      color: #ffffff; /* Cor do texto branco */
-      text-decoration: none; /* Remove a decoração de link padrão */
+      color: #ffffff;
+      text-decoration: none;
       cursor: pointer;
-      transition: color 0.3s; /* Adiciona uma transição suave na cor do texto */
+      transition: color 0.3s;
     }
 
     #developer-info a:hover {
-      color: #f39c12; /* Altera a cor do texto ao passar o mouse sobre o link */
+      color: #f39c12;
+    }
+
+    #todo-list {
+      width: 300px;
+      background: #603378;
+      border-radius: 10px;
+      margin-top: 20px;
+      padding: 15px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      overflow-y: auto;
+      max-height: 200px;
+    }
+
+    #todo-list input {
+      width: 80%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: none;
+      border-radius: 5px;
+      outline: none;
+    }
+
+    #todo-list button {
+      width: 100px;
+      padding: 4px;
+      border: none;
+      border-radius: 5px;
+      background: hsl(267, 39%, 49%);
+      color: white;
+      cursor: pointer;
+    }
+
+    #todo-list ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    #todo-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #5f2a2a;
+      border-radius: 5px;
+      padding: 8px;
+      margin-bottom: 8px;
+    }
+
+    #todo-list li button {
+      background: #f44336;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
     }
   </style>
   <title>Pomodoro Timer</title>
 </head>
 <body>
   <div id="timer-wrapper">
-    <div id="apple-emoji" onclick="showInstructions()">🍎</div>
     <div id="timer">00:00</div>
     <div id="status"></div>
     <div id="controls">
-      <label for="duration">Escolha a duração (minutos):</label>
+      <label for="duration">duração(minutos):</label>
       <input type="number" id="duration" min="1" max="60" value="25">
       <button onclick="startCustomTimer()">Iniciar</button>
     </div>
-    <!-- Adiciona emoji de maçã -->
     <div id="apple-emoji" onclick="showInstructions()">🍎</div>
-    <!-- Adiciona pop-up de instruções -->
     <div id="instruction-popup">
       <p>Passo 1: Escolha a Tarefa</p>
-
       <p>Passo 2: Configure o Timer</p>
-      
       <p>Passo 3: Trabalhe na Tarefa</p>
-      
       <p>Passo 4: Faça uma Pausa Curta</p>
-      
       <p>Passo 5: Repita</p>
-      
-  
-      
+    </div>
   </div>
 
-  <!-- Adiciona o texto "DEVELOPED BY LUD" como um link para o GitHub -->
   <div id="developer-info">
-    <a href="https://github.com/luudnobre" target="_blank">DEVELOPED BY LUD 👩🏼‍💻</a>
+    <a href="https://github.com/luudnobre" target="_blank">BY LUD NÓBREGA 👩🏼‍💻</a>
+  </div>
+
+  <div id="todo-list">
+    <input type="text" id="taskInput" placeholder="Adicione uma tarefa">
+    <button onclick="addTask()">Adicionar</button>
+    <ul id="tasks"></ul>
   </div>
 
   <script>
-    let timerInterval;
-    let timerDuration = 60 * 60; // Tempo inicial em segundos (60 minutos)
-    let isResting = false;
+    let tasks = [];
 
-    function startTimer(duration) {
-      clearInterval(timerInterval);
+    function addTask() {
+      const taskInput = document.getElementById('taskInput');
+      const task = taskInput.value.trim();
 
-      timerDuration = duration * 60; // Converte minutos para segundos
-      updateTimerDisplay();
-
-      timerInterval = setInterval(updateTimer, 1000);
-    }
-
-    function startCustomTimer() {
-      const selectedDuration = document.getElementById('duration').value;
-      startTimer(selectedDuration);
-    }
-
-    function updateTimer() {
-      if (timerDuration === 0) {
-        clearInterval(timerInterval);
-        playSound();
-
-        if (isResting) {
-          showChecklist();
-        } else {
-          isResting = true;
-          startTimer(10); // Inicia um timer de 10 minutos para descanso
-        }
-      } else {
-        timerDuration--;
-        updateTimerDisplay();
+      if (task !== '') {
+        tasks.push(task);
+        updateTaskList();
+        taskInput.value = '';
       }
     }
 
-    function updateTimerDisplay() {
-      const minutes = Math.floor(timerDuration / 60);
-      const seconds = timerDuration % 60;
-      document.getElementById('timer').textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-      document.getElementById('status').textContent = isResting ? 'Tempo de Descanso' : 'Tempo de Trabalho';
+    function removeTask(index) {
+      tasks.splice(index, 1);
+      updateTaskList();
     }
 
-    function showChecklist() {
-      const name = prompt('Ciclo concluído! Dê um nome para este ciclo:');
-      alert(`Ciclo concluído: ${name || 'Sem nome'}`);
-    }
+    function updateTaskList() {
+      const tasksContainer = document.getElementById('tasks');
+      tasksContainer.innerHTML = '';
 
-    function playSound() {
-      const audio = new Audio('caminho/do/seu/audio.mp3'); // Substitua pelo caminho do seu arquivo de áudio
-      audio.play();
-      
-    }
-
-    function showInstructions() {
-      const popup = document.getElementById('instruction-popup');
-      popup.style.display = 'block';
+      tasks.forEach((task, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <span>${task}</span>
+          <button onclick="removeTask(${index})">Remover</button>
+        `;
+        tasksContainer.appendChild(li);
+      });
     }
   </script>
 </body>
