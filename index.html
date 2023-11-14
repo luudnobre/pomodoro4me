@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: linear-gradient(to bottom, #000000, #003300); /* Degradê verde escuro sobre fundo preto */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      color: #ffffff; /* Cor do texto branco */
+      font-family: 'Arial', sans-serif;
+    }
+
+    #timer {
+      font-size: 3em;
+      margin-top: 20px;
+    }
+
+    #status {
+      font-size: 1.5em;
+      margin-top: 10px;
+    }
+  </style>
+  <title>Pomodoro Timer</title>
+</head>
+<body>
+  <div id="timer">00:00</div>
+  <div id="status"></div>
+
+  <script>
+    let timerInterval;
+    let timerDuration = 60 * 60; // Tempo inicial em segundos (60 minutos)
+    let isResting = false;
+
+    function startTimer(duration) {
+      clearInterval(timerInterval);
+
+      timerDuration = duration;
+      updateTimerDisplay();
+
+      timerInterval = setInterval(updateTimer, 1000);
+    }
+
+    function updateTimer() {
+      if (timerDuration === 0) {
+        clearInterval(timerInterval);
+        playSound();
+
+        if (isResting) {
+          showChecklist();
+        } else {
+          isResting = true;
+          startTimer(10 * 60); // Inicia um timer de 10 minutos para descanso
+        }
+      } else {
+        timerDuration--;
+        updateTimerDisplay();
+      }
+    }
+
+    function updateTimerDisplay() {
+      const minutes = Math.floor(timerDuration / 60);
+      const seconds = timerDuration % 60;
+      document.getElementById('timer').textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      document.getElementById('status').textContent = isResting ? 'Tempo de Descanso' : 'Tempo de Trabalho';
+    }
+
+    function showChecklist() {
+      const name = prompt('Ciclo concluído! Dê um nome para este ciclo:');
+      alert(`Ciclo concluído: ${name || 'Sem nome'}`);
+    }
+
+    function playSound() {
+      const audio = new Audio('jingle_bells.mp3'); // Substitua pelo caminho do seu arquivo de som
+      audio.play();
+    }
+
+    // Inicia o timer com 25 minutos (tempo de trabalho padrão)
+    startTimer(25 * 60);
+  </script>
+</body>
+</html>
