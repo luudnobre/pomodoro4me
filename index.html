@@ -24,12 +24,22 @@
       font-size: 1.5em;
       margin-top: 10px;
     }
+
+    #controls {
+      margin-top: 20px;
+    }
   </style>
   <title>Pomodoro Timer</title>
 </head>
 <body>
   <div id="timer">00:00</div>
   <div id="status"></div>
+  
+  <div id="controls">
+    <label for="duration">Escolha a duração (minutos):</label>
+    <input type="number" id="duration" min="1" max="60" value="25">
+    <button onclick="startCustomTimer()">Iniciar</button>
+  </div>
 
   <script>
     let timerInterval;
@@ -39,10 +49,15 @@
     function startTimer(duration) {
       clearInterval(timerInterval);
 
-      timerDuration = duration;
+      timerDuration = duration * 60; // Converte minutos para segundos
       updateTimerDisplay();
 
       timerInterval = setInterval(updateTimer, 1000);
+    }
+
+    function startCustomTimer() {
+      const selectedDuration = document.getElementById('duration').value;
+      startTimer(selectedDuration);
     }
 
     function updateTimer() {
@@ -54,7 +69,7 @@
           showChecklist();
         } else {
           isResting = true;
-          startTimer(10 * 60); // Inicia um timer de 10 minutos para descanso
+          startTimer(10); // Inicia um timer de 10 minutos para descanso
         }
       } else {
         timerDuration--;
@@ -75,12 +90,34 @@
     }
 
     function playSound() {
-      const audio = new Audio('jingle_bells.mp3'); // Substitua pelo caminho do seu arquivo de som
+      const audio = new Audio('caminho/do/seu/som.mp3'); // Substitua pelo caminho do seu arquivo de som
       audio.play();
     }
-
-    // Inicia o timer com 25 minutos (tempo de trabalho padrão)
-    startTimer(25 * 60);
   </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body {
+    background: linear-gradient(to bottom, #000000, #003300); /* Degradê verde escuro sobre fundo preto */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    color: #ffffff; /* Cor do texto branco */
+    font-family: 'Arial', sans-serif;
+  }
+
+  #movingText {
+    color: #00ffa689; /* Cor vermelha */
+    font-style: italic;
+    font-size: 1.5em;
+  }
+</style>
+<title>Pomodoro Timer</title>
+</head>
+<body>
+<div id="movingText" behavior="scroll" direction="left" scrollamount="5"><h2> developed by Lud </h2></div>
+</body>
 </body>
 </html>
