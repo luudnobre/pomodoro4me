@@ -172,48 +172,63 @@
     </div>
   </div>
 
-  <div id="developer-info">
-    <a href="https://github.com/luudnobre" target="_blank">BY LUD NÓBREGA 👩🏼‍💻</a>
-  </div>
-
   <div id="todo-list">
     <input type="text" id="taskInput" placeholder="Adicione uma tarefa">
     <button onclick="addTask()">Adicionar</button>
     <ul id="tasks"></ul>
   </div>
 
+  <div id="developer-info">
+    <a href="https://github.com/luudnobre" target="_blank">BY LUD NÓBREGA 👩🏼‍💻</a>
+  </div>
+
   <script>
-    let tasks = [];
+    let timerInterval;
+    let timerDuration = 60 * 60; // Tempo inicial em segundos (60 minutos)
+    let isResting = false;
 
-    function addTask() {
-      const taskInput = document.getElementById('taskInput');
-      const task = taskInput.value.trim();
+    // Array de caminhos de áudio
+    const audioPaths = [
+      'C:\Users\luudn\Music.mp3',
+      'caminho/do/seu/audio3.mp3',
+      // Adicione quantos caminhos de áudio desejar
+    ];
 
-      if (task !== '') {
-        tasks.push(task);
-        updateTaskList();
-        taskInput.value = '';
+    function startTimer(duration) {
+      clearInterval(timerInterval);
+
+      timerDuration = duration * 60; // Converte minutos para segundos
+      updateTimerDisplay();
+
+      timerInterval = setInterval(updateTimer, 1000);
+    }
+
+    function startCustomTimer() {
+      const selectedDuration = document.getElementById('duration').value;
+      startTimer(selectedDuration);
+    }
+
+    function updateTimer() {
+      if (timerDuration === 0) {
+        clearInterval(timerInterval);
+        playSound();
+        // ... (mesmo conteúdo do restante da função) ...
+      } else {
+        timerDuration--;
+        updateTimerDisplay();
       }
     }
 
-    function removeTask(index) {
-      tasks.splice(index, 1);
-      updateTaskList();
+    function playSound() {
+      // Escolhe aleatoriamente um caminho de áudio
+      const randomIndex = Math.floor(Math.random() * audioPaths.length);
+      const audioPath = audioPaths[randomIndex];
+
+      const audio = new Audio(audioPath);
+      audio.play();
     }
 
-    function updateTaskList() {
-      const tasksContainer = document.getElementById('tasks');
-      tasksContainer.innerHTML = '';
-
-      tasks.forEach((task, index) => {
-        const li = document.createElement('li');
-        li.innerHTML = `
-          <span>${task}</span>
-          <button onclick="removeTask(${index})">Remover</button>
-        `;
-        tasksContainer.appendChild(li);
-      });
-    }
+    // ... (restante do script) ...
   </script>
 </body>
 </html>
