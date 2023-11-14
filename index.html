@@ -1,234 +1,284 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <h1> POMODORO FLOW </h1>
-  <style>
-    body {
-      background: linear-gradient(to bottom, #450a63, #000000);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      color: #ffffff;
-      font-family: 'Fira Code', monospace;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer</title>
+    <style>
+        body {
+            background: linear-gradient(to bottom, #450a63, #000000);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            color: #ffffff;
+            font-family: 'Fira Code', monospace;
+        }
 
-    #timer-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-      border: 2px solid rgb(87, 86, 142);
-      padding: 20px;
-      border-radius: 10px;
-    }
+        #timer-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            border: 2px solid rgb(87, 86, 142);
+            padding: 20px;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.5);
+        }
 
-    #timer {
-      font-size: 3em;
-      margin: auto;
-    }
+        #timer {
+            font-size: 3em;
+            margin: auto;
+            color: #f39c12;
+        }
 
-    #status {
-      font-size: 1.5em;
-      margin-top: 10px;
-    }
+        #controls {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+        }
 
-    #controls {
-      margin-top: 20px;
-    }
+        #duration {
+            width: 40px;
+            margin-right: 10px;
+        }
 
-    #github-link {
-      font-size: 1.5em;
-      margin-top: 20px;
-      cursor: pointer;
-      animation: fadeIn 2s;
-      text-decoration: none;
-      color: #ffffff;
-      font-weight: bold;
-    }
+        button {
+            padding: 10px;
+            background: hsl(267, 39%, 59%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
 
-    #instruction-popup {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(0, 0, 0, 0.8);
-      color: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      display: none;
-      font-size: 1.2em;
-      text-align: left;
-    }
+        #apple-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
 
-    #apple-emoji {
-      font-size: 2em;
-      cursor: pointer;
-      position: absolute;
-      top: -20px;
-      left: 50%;
-      transform: translateX(-50%);
-    }
+        #apple-emoji {
+            font-size: 2em;
+            cursor: pointer;
+        }
 
-    #developer-info {
-      font-size: 1.5em;
-      margin-top: 20px;
-      font-weight: bold;
-      text-align: center;
-    }
+        #instruction-popup {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+            font-size: 1.2em;
+            text-align: left;
+        }
 
-    #developer-info a {
-      color: #ffffff;
-      text-decoration: none;
-      cursor: pointer;
-      transition: color 0.3s;
-    }
+        #developer-info {
+            font-size: 1.5em;
+            margin-top: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
 
-    #developer-info a:hover {
-      color: #f39c12;
-    }
+        #developer-info a {
+            color: #ffffff;
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
 
-    #todo-list {
-      width: 300px;
-      background: #603378;
-      border-radius: 10px;
-      margin-top: 20px;
-      padding: 15px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-      overflow-y: auto;
-      max-height: 200px;
-    }
+        #developer-info a:hover {
+            color: #f39c12;
+        }
 
-    #todo-list input {
-      width: 80%;
-      padding: 8px;
-      margin-bottom: 10px;
-      border: none;
-      border-radius: 5px;
-      outline: none;
-    }
+        #todo-list {
+            width: 300px;
+            background: #603378;
+            border-radius: 10px;
+            margin-top: 20px;
+            padding: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            overflow-y: auto;
+            max-height: 200px;
+        }
 
-    #todo-list button {
-      width: 100px;
-      padding: 4px;
-      border: none;
-      border-radius: 5px;
-      background: hsl(267, 39%, 49%);
-      color: white;
-      cursor: pointer;
-    }
+        #todo-list input {
+            width: 80%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+        }
 
-    #todo-list ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
+        #todo-list button {
+            width: 100px;
+            padding: 4px;
+            border: none;
+            border-radius: 5px;
+            background: hsl(267, 39%, 49%);
+            color: white;
+            cursor: pointer;
+        }
 
-    #todo-list li {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #5f2a2a;
-      border-radius: 5px;
-      padding: 8px;
-      margin-bottom: 8px;
-    }
+        #todo-list ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
 
-    #todo-list li button {
-      background: #f44336;
-    }
+        #todo-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #5f2a2a;
+            border-radius: 5px;
+            padding: 8px;
+            margin-bottom: 8px;
+        }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
-  </style>
-  <title>Pomodoro Timer</title>
+        #todo-list li button {
+            background: #f44336;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
 </head>
+
 <body>
-  <div id="timer-wrapper">
-    <div id="timer">00:00</div>
-    <div id="status"></div>
-    <div id="controls">
-      <label for="duration">duração(minutos):</label>
-      <input type="number" id="duration" min="1" max="60" value="25">
-      <button onclick="startCustomTimer()">Iniciar</button>
+    <div id="timer-wrapper">
+        <div id="timer">00:00</div>
+        <div id="status"></div>
+        <div id="controls">
+            <label for="duration">duração(minutos):</label>
+            <input type="number" id="duration" min="1" max="60" value="25">
+            <button onclick="startTimer()">Iniciar</button>
+            <button onclick="pauseTimer()">Pausar</button>
+            <button onclick="resetTimer()">Reiniciar</button>
+        </div>
+        <div id="apple-container">
+            <div id="apple-emoji" onclick="showInstructions()">🍎</div>
+        </div>
+        <div id="instruction-popup">
+            <p>Passo 1: Escolha a Tarefa</p>
+            <p>Passo 2: Configure o Timer</p>
+            <p>Passo 3: Trabalhe na Tarefa</p>
+            <p>Passo 4: Faça uma Pausa Curta</p>
+            <p>Passo 5: Repita</p>
+        </div>
     </div>
-    <div id="apple-emoji" onclick="showInstructions()">🍎</div>
-    <div id="instruction-popup">
-      <p>Passo 1: Escolha a Tarefa</p>
-      <p>Passo 2: Configure o Timer</p>
-      <p>Passo 3: Trabalhe na Tarefa</p>
-      <p>Passo 4: Faça uma Pausa Curta</p>
-      <p>Passo 5: Repita</p>
+
+    <div id="developer-info">
+        <a href="https://github.com/luudnobre" target="_blank">BY LUD NÓBREGA 👩🏼‍💻</a>
     </div>
-  </div>
 
-  <div id="todo-list">
-    <input type="text" id="taskInput" placeholder="Adicione uma tarefa">
-    <button onclick="addTask()">Adicionar</button>
-    <ul id="tasks"></ul>
-  </div>
+    <div id="todo-list">
+        <input type="text" id="taskInput" placeholder="Adicione uma tarefa">
+        <button onclick="addTask()">Adicionar</button>
+        <ul id="tasks"></ul>
+    </div>
 
-  <div id="developer-info">
-    <a href="https://github.com/luudnobre" target="_blank">BY LUD NÓBREGA 👩🏼‍💻</a>
-  </div>
+    <script>
+        let tasks = [];
+        let timer;
+        let intervalId;
 
-  <script>
-    let timerInterval;
-    let timerDuration = 60 * 60; // Tempo inicial em segundos (60 minutos)
-    let isResting = false;
+        function startTimer() {
+            if (!timer || timer <= 0) {
+                const durationInput = document.getElementById('duration');
+                const duration = durationInput.value * 60;
+                timer = duration;
+                updateTimerDisplay();
 
-    // Array de caminhos de áudio
-    const audioPaths = [
-      'C:\Users\luudn\Music.mp3',
-      'caminho/do/seu/audio3.mp3',
-      // Adicione quantos caminhos de áudio desejar
-    ];
+                intervalId = setInterval(function () {
+                    if (timer <= 0) {
+                        clearInterval(intervalId);
+                        playSound();
+                        // Adicione aqui qualquer ação que deseja realizar ao finalizar o timer
+                    } else {
+                        timer--;
+                        updateTimerDisplay();
+                    }
+                }, 1000);
+            }
+        }
 
-    function startTimer(duration) {
-      clearInterval(timerInterval);
+        function pauseTimer() {
+            clearInterval(intervalId);
+        }
 
-      timerDuration = duration * 60; // Converte minutos para segundos
-      updateTimerDisplay();
+        function stopTimer() {
+            clearInterval(intervalId);
+            timer = 0;
+            updateTimerDisplay();
+        }
 
-      timerInterval = setInterval(updateTimer, 1000);
-    }
+        function resetTimer() {
+            stopTimer();
+            startTimer();
+        }
 
-    function startCustomTimer() {
-      const selectedDuration = document.getElementById('duration').value;
-      startTimer(selectedDuration);
-    }
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timer / 60);
+            const seconds = timer % 60;
+            document.getElementById('timer').innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        }
 
-    function updateTimer() {
-      if (timerDuration === 0) {
-        clearInterval(timerInterval);
-        playSound();
-        // ... (mesmo conteúdo do restante da função) ...
-      } else {
-        timerDuration--;
-        updateTimerDisplay();
-      }
-    }
+        function playSound() {
+            // Adicione aqui o código para tocar o som desejado
+        }
 
-    function playSound() {
-      // Escolhe aleatoriamente um caminho de áudio
-      const randomIndex = Math.floor(Math.random() * audioPaths.length);
-      const audioPath = audioPaths[randomIndex];
+        function addTask() {
+            const taskInput = document.getElementById('taskInput');
+            const task = taskInput.value.trim();
 
-      const audio = new Audio(audioPath);
-      audio.play();
-    }
+            if (task !== '') {
+                tasks.push(task);
+                updateTaskList();
+                taskInput.value = '';
+            }
+        }
 
-    // ... (restante do script) ...
-  </script>
+        function removeTask(index) {
+            tasks.splice(index, 1);
+            updateTaskList();
+        }
+
+        function updateTaskList() {
+            const tasksContainer = document.getElementById('tasks');
+            tasksContainer.innerHTML = '';
+
+            tasks.forEach((task, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span>${task}</span>
+                    <button onclick="removeTask(${index})">Remover</button>
+                `;
+                tasksContainer.appendChild(li);
+            });
+        }
+
+        function showInstructions() {
+            const instructionPopup = document.getElementById('instruction-popup');
+            instructionPopup.style.display = 'block';
+        }
+    </script>
 </body>
+
 </html>
